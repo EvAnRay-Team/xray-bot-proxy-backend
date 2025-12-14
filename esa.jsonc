@@ -1,0 +1,17 @@
+{
+  // 函数 JavaScript 文件路径（相对于项目根目录）
+  "function": "./export.js",
+  
+  // 静态资源目录（如果没有静态资源，指向当前目录）
+  "assets": "./",
+  
+  // 函数入口点（由于使用 export default，handler 名称）
+  "handler": "handler",
+  
+  // 运行时环境
+  "runtime": "nodejs18",
+  
+  // 依赖目录（如果需要打包 node_modules）
+  "dependencies": "./node_modules"
+}
+
