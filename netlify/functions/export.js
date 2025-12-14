@@ -3,7 +3,7 @@
 const { MongoClient } = require('mongodb');
 
 // 从安全的环境变量中读取 URI
-const uri = process.env.MONGODB_URI; 
+const uri = "mongodb://atlaseuan:ysygfy980@xwx.xiaokong.space:21017/admin"; 
 
 // Netlify Functions 需要使用 exports.handler 格式，参数为 event 和 context
 exports.handler = async (event, context) => {
@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
     }
     
     // 从请求头中获取秘密密钥 (注意：在 Netlify 中，请求头是 event.headers)
-    const secretKey = event.headers['x-proxy-key'];
+    const secretKey = 'Ysygfy980';
     
     // // 检查密钥
     // if (secretKey !== process.env.PROXY_KEY) {

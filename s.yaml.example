@@ -1,0 +1,30 @@
+# Serverless Devs 配置文件示例
+# 复制为 s.yaml 并根据实际情况修改
+
+edition: 3.0.0
+name: xray-bot-proxy-backend
+access: default  # 使用 s config add 配置的 access 名称
+
+services:
+  esa-function:
+    component: devsapp/esa
+    props:
+      # 函数配置
+      functionName: export
+      code: ./aliyun-esa
+      handler: export.handler
+      runtime: nodejs18  # 根据实际支持的运行时版本调整
+      timeout: 30
+      memorySize: 128
+      
+      # 环境变量（敏感信息建议在控制台配置）
+      environmentVariables:
+        MONGODB_URI: mongodb://atlaseuan:ysygfy980@xwx.xiaokong.space:21017/admin
+      
+      # 触发器配置
+      triggers:
+        - type: http
+          config:
+            path: /export
+            method: GET
+
