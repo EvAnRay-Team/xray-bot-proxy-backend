@@ -11,7 +11,7 @@ services:
     props:
       # 函数配置
       functionName: export
-      code: ./aliyun-esa
+      code: ./
       handler: export.handler
       runtime: nodejs18  # 根据实际支持的运行时版本调整
       timeout: 30

@@ -1,4 +1,13 @@
 node_modules/
+*.log
+.DS_Store
 
-# Local Netlify folder
-.netlify
+# Serverless Devs
+.s/
+
+# 配置文件（包含敏感信息）
+s.yaml
+.env
+
+# 打包文件
+*.zip

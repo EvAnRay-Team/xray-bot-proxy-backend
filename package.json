@@ -1,14 +1,20 @@
 {
   "name": "xray-bot-proxy-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "基于阿里云 ESA 边缘函数的后端服务",
+  "main": "export.js",
+  "type": "module",
   "scripts": {
-    "dev": "netlify dev",
-    "start": "netlify dev",
+    "dev": "node local-server.js",
+    "start": "node local-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "aliyun",
+    "esa",
+    "serverless",
+    "edge-function"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
