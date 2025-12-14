@@ -1,20 +1,30 @@
-// api/export.js
+// netlify/functions/export.js
 
 import { MongoClient } from 'mongodb';
 
-// 仅从环境变量中读取 URI，保证安全
+// 从安全的环境变量中读取 URI
 const uri = process.env.MONGODB_URI; 
 
-export default async function handler(req, res) {
-    if (req.method !== 'GET') {
-        // 确保只接受 GET 请求
-        return res.status(405).send('Method Not Allowed');
+// Netlify Functions 需要使用 exports.handler 格式，参数为 event 和 context
+exports.handler = async (event, context) => {
+    
+    // 检查请求方法
+    if (event.httpMethod !== 'GET') {
+        return {
+            statusCode: 405,
+            body: 'Method Not Allowed'
+        };
     }
-
-    // 假设您还需要一个简单的秘密密钥来防止意外访问
-    const secretKey = req.headers.get('X-Proxy-Key');
+    
+    // 从请求头中获取秘密密钥 (注意：在 Netlify 中，请求头是 event.headers)
+    const secretKey = event.headers['x-proxy-key'];
+    
+    // 检查密钥
     if (secretKey !== process.env.PROXY_KEY) {
-        return res.status(401).send('Unauthorized');
+        return {
+            statusCode: 401,
+            body: JSON.stringify({ error: 'Unauthorized' })
+        };
     }
 
     let client;
@@ -26,21 +36,29 @@ export default async function handler(req, res) {
         const db = client.db('xray-mai-bot'); 
         const collection = db.collection('alias');
 
-        // 获取数据
-        const data = await collection.find({}).limit(10).toArray(); 
+        // 1. 获取数据
+        const data = await collection.find({}).limit(10).toArray();
 
-        // 设置响应头：允许跨域 (CORS) 和 JSON 下载
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Content-Disposition', 'attachment; filename="data_export.json"');
-        
-        return res.status(200).json(data);
+        // 2. 返回 Netlify Functions 标准响应对象
+        return {
+            statusCode: 200,
+            headers: {
+                // 确保数据以 JSON 格式返回，并设置为下载附件
+                'Content-Type': 'application/json',
+                'Content-Disposition': 'attachment; filename="data_export.json"'
+            },
+            body: JSON.stringify(data) // 响应体必须是字符串
+        };
 
     } catch (error) {
         console.error('Database error:', error);
-        return res.status(500).json({ error: 'Data fetch failed' });
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Data fetch failed' })
+        };
     } finally {
         if (client) {
             await client.close(); 
         }
     }
-}
+}; // 别忘了末尾的 }
