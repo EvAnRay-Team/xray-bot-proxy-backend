@@ -1,6 +1,6 @@
 // netlify/functions/export.js
 
-import { MongoClient } from 'mongodb';
+const { MongoClient } = require('mongodb');
 
 // 从安全的环境变量中读取 URI
 const uri = process.env.MONGODB_URI; 
@@ -19,13 +19,13 @@ exports.handler = async (event, context) => {
     // 从请求头中获取秘密密钥 (注意：在 Netlify 中，请求头是 event.headers)
     const secretKey = event.headers['x-proxy-key'];
     
-    // 检查密钥
-    if (secretKey !== process.env.PROXY_KEY) {
-        return {
-            statusCode: 401,
-            body: JSON.stringify({ error: 'Unauthorized' })
-        };
-    }
+    // // 检查密钥
+    // if (secretKey !== process.env.PROXY_KEY) {
+    //     return {
+    //         statusCode: 401,
+    //         body: JSON.stringify({ error: 'Unauthorized' })
+    //     };
+    // }
 
     let client;
     try {
