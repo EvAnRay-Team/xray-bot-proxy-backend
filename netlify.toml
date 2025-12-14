@@ -1,0 +1,5 @@
+# netlify.toml
+
+[build]
+  # 告诉 Netlify 你的函数在哪里
+  functions = "netlify/functions"
